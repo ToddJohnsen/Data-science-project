@@ -31,7 +31,7 @@ year = 2015
 def BasicStats(year):
     df = pd.DataFrame(columns = col_u)
     #df.reindex_axis()
-    r =requests.get('http://www.basketball-reference.com/leagues/NBA_'+ str(year) +'_per_game.html')
+    r =requests.get('http://www.hockey-reference.com/leagues/NBA_'+ str(year) +'_per_game.html')
     b = BeautifulSoup(r.text,"html.parser")
     players_basic = b.find_all('tr', attrs = {"class":"full_table"})
     for player in players_basic:
@@ -43,7 +43,7 @@ def BasicStats(year):
         df.loc[len(df)]=player_bas_atts_list
     return df
  
-years = range(1952,2016)
+years = range(1930,2016)
 basic_stats = pd.DataFrame()
 for year in years:
     stats= BasicStats(year)
@@ -56,7 +56,7 @@ for year in years:
 def AdvanceStats(year):
     df = pd.DataFrame(columns = new_attributes)
     #df.reindex_axis()
-    r = requests.get('http://www.basketball-reference.com/leagues/NBA_'+ str(year) +'_advanced.html')
+    r = requests.get('http://www.hockey-reference.com/leagues/NBA_'+ str(year) +'_advanced.html')
     b = BeautifulSoup(r.text,"html.parser")
     players_advance = b.find_all('tr', attrs = {"class":"full_table"})
     for player in players_advance:
@@ -68,7 +68,7 @@ def AdvanceStats(year):
         df.loc[len(df)]=player_adv_atts_list
     return df
 
-years = range(1951,2016)
+years = range(1930,2016)
 advanced_stats = pd.DataFrame()    
 for year in years:
     advstats = AdvanceStats(year)
@@ -94,7 +94,7 @@ import requests # how python goes onto the internet!
 from bs4 import BeautifulSoup # (version 4)
 #from BeautifulSoup import BeautifulSoup
 help(requests.get)
-r = requests.get('http://www.basketball-reference.com/awards/all_league.html')
+r = requests.get('http://www.hockey-reference.com/awards/all_league.html')
 
 
 b = BeautifulSoup(r.text.replace('&nbsp;','').replace('&gt;','').encode('ascii','ignore')) # create a beautifulsoup object
@@ -148,19 +148,19 @@ all_league_data['league'] = league
 
 #Only have NBA data statistics not other leagues
 #now remove all values not equal to NBA
-NBA= all_league_data[all_league_data.league=='NBA']
+NHL= all_league_data[all_league_data.league=='NHL']
 
 #create season variable
-NBA['season']= NBA.year
+NHL['season']= NHL.year
 
 
-del NBA['year']
-del NBA['league']
+del NHL['year']
+del NHL['league']
 
 
-season_end = [int(sea[-4:]) for sea in NBA.season]
+season_end = [int(sea[-4:]) for sea in NHL.season]
 
-NBA['season_end'] = season_end
+NHL['season_end'] = season_end
 
-NBA.to_csv('All_Team_Data.csv')
+NHL.to_csv('All_Team_Data.csv')
 
