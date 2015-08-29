@@ -40,7 +40,7 @@ d_2014 = nhl_2014
 d_2014.info()
 
 
-col_u = ["gp","g","a","pts","+_-","pim","ev","pp","sh","gw","ev","x2pa","x2p_","ft","fta","ft_","orb","drb","trb","ast","stl","blk","tov","pf","pts"]
+col_u = ["gp","g","a","pts","+\-","pim","ev","pp","sh","gw","ev","pp","sh","s","s_","toi","atoi","blk","hit","fowin","foloss","fo_"]
 
 #Set up X and y variables
 X= d[col_u]
@@ -103,7 +103,7 @@ sensitivity = sum(test_d.pred_class == test_d.team) / float(len(test_d.team))
 #Second model
 
 #Can we improve sensitivity by using advance variables?
-col_a = ["FTr","BLK%","TS%","STL%","AST%","3PAr","USG%",'DBPM','OBPM','BPM','PER','DWS','OWS','WS','WS/48','TOV%','TRB%']
+col_a = ["GP","CF","CA","CF% rel","c/60","crel/60","ff","fa","ff%","ff% rel","oiSH% ","oiSV" ,"PDO","oZS%","dZS%","TOI/60","TOI(EV)", "TK", "GV", "SAtt.", "Thru%"]
 
 
 X= d[col_a]
@@ -145,7 +145,7 @@ sensitivity = sum(test_d.pred_class == test_d.team) / float(len(test_d.team))
 #senstivity decreases
 
 #third Model
-col_c= ["g","mp","fg_","ft_","orb","drb","ast","stl","blk","tov","pts",'DBPM','OBPM','PER','DWS','WS','WS/48','AST%']
+col_c= ["GP","CF","CA","CF% rel","c/60","crel/60","ff","fa","ff%","ff% rel","oiSH% ","oiSV" ,"PDO","oZS%","dZS%","TOI/60","TOI(EV)", "TK", "GV", "SAtt.", "Thru%"]
 #col_c = ["g","mp","fg_","ft_","orb","drb","ast","stl","blk","tov","pts",'DBPM','OBPM','PER','DWS','OWS']
 
 X= d[col_c]
@@ -243,15 +243,15 @@ cross_val_score(logreg, X, y, cv=10, scoring='roc_auc').mean()
 #Use supervised classification models to predict what team players are on
 
 
-feat_cols =  ["g","mp","fg_","ft_","orb","drb","ast","stl","blk","tov","pts",'DBPM','OBPM','PER','DWS','OWS','WS','WS/48','AST%']
+feat_cols =  ["GP","CF","CA","CF% rel","c/60","crel/60","ff","fa","ff%","ff% rel","oiSH% ","oiSV" ,"PDO","oZS%","dZS%","TOI/60","TOI(EV)", "TK", "GV", "SAtt.", "Thru%"]
 from sklearn.tree import DecisionTreeClassifier
 treeclf = DecisionTreeClassifier()
 
-nbaHistoric= NBA_players[NBA_players.season_end <= 2013]
+nbaHistoric= NHL_players[NHL_players.season_end <= 2013]
 
 d = nbaHistoric
 d.info()
-d_2014 = nba_2014
+d_2014 = nhl_2014
 
 
 X= d[feat_cols]
@@ -274,7 +274,7 @@ d_2014['treepred']= treeclf.predict(d_2014[feat_cols])
 
 #visualize decision tree
 #from sklearn.tree import export_graphviz
-#with open("NBA.dot", 'wb') as f:
+#with open("NHL.dot", 'wb') as f:
 #    f = export_graphviz(treeclf, out_file=f, feature_names=feat_cols)
 
 
@@ -306,12 +306,12 @@ df = d_2014[['player','team','treepred','rfprd_predic','pred2014', 'probs2014' ]
 ###############LOG REG Model for  2015
     
 
-nbaHistoric2= NBA_players[NBA_players.season_end <= 2014]
-nba_2015= NBA_players_2015
+nbaHistoric2= NHL_players[NHL_players.season_end <= 2014]
+nba_2015= NHL_players_2015
 
 
 
-#nbaHistoric = NBA_players[NBA_players.season_end <= 2013]
+#nbaHistoric = NHL_players[NHL_players.season_end <= 2013]
 
 d = nbaHistoric2
 
